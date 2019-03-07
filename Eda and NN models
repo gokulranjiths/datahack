@@ -1,0 +1,168 @@
+
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import datasets, linear_model
+from sklearn.metrics import mean_squared_error, r2_score
+import pandas as pd
+
+#reading the data and converting the all the data into numercal data
+data=pd.read_csv("D:/datahack/train_LZdllcl.csv")
+testdata=pd.read_csv("D:/datahack/test_2umaH9m.csv")
+data.drop("employee_id",axis= 1,inplace= True)
+testdata.drop("employee_id",axis= 1,inplace= True)
+data=data.replace({"department" :{"Analytics":1,"Finance":2,"HR":3,"Legal":4,"Operations":5,"Procurement":6,"R&D":7,"Sales & Marketing":8,"Technology":9},
+                     "education"  :{"Bachelor's":2,"Below Secondary":1,"Master's & above":3},
+                     "gender"     :{"f":1,"m":2},
+                     "recruitment_channel":{"other":1,"referred":2,"sourcing":3},
+                     "region"     :{"region_1":1,"region_10":2,"region_11":3,"region_12":4,"region_13":5,"region_14":6,"region_15":7,"region_16":8,"region_17":9,"region_18":10,"region_19":11,"region_2":12,"region_20":13,"region_21":14,"region_22":15,"region_23":16,"region_24":17,"region_25":18,"region_26":19,"region_27":20,"region_28":21,"region_29":22,"region_3":23,"region_30":24,"region_31":25,"region_32":26,"region_33":27,"region_34":28,"region_4":29,"region_5":30,"region_6":31,"region_7":32,"region_8":33,"region_9":34}})
+
+
+
+testdata=testdata.replace({"department" :{"Analytics":1,"Finance":2,"HR":3,"Legal":4,"Operations":5,"Procurement":6,"R&D":7,"Sales & Marketing":8,"Technology":9},
+                     "education"  :{"Bachelor's":2,"Below Secondary":1,"Master's & above":3},
+                     "gender"     :{"f":1,"m":2},
+                     "recruitment_channel":{"other":1,"referred":2,"sourcing":3},
+                     "region"     :{"region_1":1,"region_10":2,"region_11":3,"region_12":4,"region_13":5,"region_14":6,"region_15":7,"region_16":8,"region_17":9,"region_18":10,"region_19":11,"region_2":12,"region_20":13,"region_21":14,"region_22":15,"region_23":16,"region_24":17,"region_25":18,"region_26":19,"region_27":20,"region_28":21,"region_29":22,"region_3":23,"region_30":24,"region_31":25,"region_32":26,"region_33":27,"region_34":28,"region_4":29,"region_5":30,"region_6":31,"region_7":32,"region_8":33,"region_9":34}})
+
+
+#correlation
+
+data.corr()
+testdata.corr()
+
+#replacing the missing values
+data.loc[:,"education"]=data.loc[:,"education"].fillna(-1)
+testdata.loc[:,"education"]=testdata.loc[:,"education"].fillna(-1)
+data.loc[:,"previous_year_rating"]=data.loc[:,"previous_year_rating"].fillna(-1)
+testdata.loc[:,"previous_year_rating"]=testdata.loc[:,"previous_year_rating"].fillna(-1)
+
+
+#bulding a regression moel to predict the missing values in education 
+data=data[data.education >=0]
+data=data[data.previous_year_rating >=0]
+testdata=testdata[testdata.education >=0]
+testdata=testdata[testdata.previous_year_rating >=0]
+Xtrainregpre =pd.DataFrame(data.iloc[:,9])
+Ytrainregpre =pd.DataFrame(data.iloc[:,7])
+regtrainpre =linear_model.LinearRegression()
+regtrainpre.fit(Xtrainregpre,Ytrainregpre)
+regtrainpredict= regr.predict(Xtrainregpre)
+roundedtrainpredict = [round(x[0]) for x in regtrainpredict]
+from sklearn.metrics import mean_squared_error
+print(mean_squared_error(roundedtrainpredict,Ytrainregpre))
+
+Xtestregpre =pd.DataFrame(testdata.iloc[:,9])
+Ytestregpre =pd.DataFrame(testdata.iloc[:,7])
+regtestpre =linear_model.LinearRegression()
+regtestpre.fit(Xtestregpre,Ytestregpre)
+regtestpredict= regr.predict(Xtestregpre)
+roundedtestpredict = [round(x[0]) for x in regtestpredict]
+from sklearn.metrics import mean_squared_error
+mean_squared_error(roundedtestpredict,Ytestregpre)
+
+
+#reading the dataset
+
+data2=pd.read_csv("D:/datahack/train_LZdllcl.csv")
+testdata2=pd.read_csv("D:/datahack/test_2umaH9m.csv")
+data2.drop("employee_id",axis= 1,inplace= True)
+testdata2.drop("employee_id",axis= 1,inplace= True)
+data2=data2.replace({"department" :{"Analytics":1,"Finance":2,"HR":3,"Legal":4,"Operations":5,"Procurement":6,"R&D":7,"Sales & Marketing":8,"Technology":9},
+                     "education"  :{"Bachelor's":2,"Below Secondary":1,"Master's & above":3},
+                     "gender"     :{"f":1,"m":2},
+                     "recruitment_channel":{"other":1,"referred":2,"sourcing":3},
+                     "region"     :{"region_1":1,"region_10":2,"region_11":3,"region_12":4,"region_13":5,"region_14":6,"region_15":7,"region_16":8,"region_17":9,"region_18":10,"region_19":11,"region_2":12,"region_20":13,"region_21":14,"region_22":15,"region_23":16,"region_24":17,"region_25":18,"region_26":19,"region_27":20,"region_28":21,"region_29":22,"region_3":23,"region_30":24,"region_31":25,"region_32":26,"region_33":27,"region_34":28,"region_4":29,"region_5":30,"region_6":31,"region_7":32,"region_8":33,"region_9":34}})
+
+testdata2=testdata2.replace({"department" :{"Analytics":1,"Finance":2,"HR":3,"Legal":4,"Operations":5,"Procurement":6,"R&D":7,"Sales & Marketing":8,"Technology":9},
+                     "education"  :{"Bachelor's":2,"Below Secondary":1,"Master's & above":3},
+                     "gender"     :{"f":1,"m":2},
+                     "recruitment_channel":{"other":1,"referred":2,"sourcing":3},
+                     "region"     :{"region_1":1,"region_10":2,"region_11":3,"region_12":4,"region_13":5,"region_14":6,"region_15":7,"region_16":8,"region_17":9,"region_18":10,"region_19":11,"region_2":12,"region_20":13,"region_21":14,"region_22":15,"region_23":16,"region_24":17,"region_25":18,"region_26":19,"region_27":20,"region_28":21,"region_29":22,"region_3":23,"region_30":24,"region_31":25,"region_32":26,"region_33":27,"region_34":28,"region_4":29,"region_5":30,"region_6":31,"region_7":32,"region_8":33,"region_9":34}})
+
+
+
+data2.loc[:,"education"]=data2.loc[:,"education"].fillna(2)
+testdata2.loc[:,"education"]=testdata2.loc[:,"education"].fillna(2)
+data2.loc[:,"previous_year_rating"]=data2.loc[:,"previous_year_rating"].fillna(0)
+testdata2.loc[:,"previous_year_rating"]=testdata2.loc[:,"previous_year_rating"].fillna(0)
+
+
+#getting the intercept and coefficent
+print(regtrainpre.intercept_)
+print(regtrainpre.coef_)
+print(regtestpre.intercept_)
+print(regtestpre.coef_)
+
+#rename the column
+data2.rename(columns={'KPIs_met >80%':'kpimet'},inplace=True)
+testdata2.rename(columns={'KPIs_met >80%':'kpimet'},inplace=True)
+
+#filling the missing values using regression
+for x in range(len(data2)):
+    if(data2.previous_year_rating[x]==0):
+        data2.previous_year_rating[x]=(3.0075685+(0.92561494*data2.kpimet[x]))
+        round(data2.previous_year_rating[x])
+
+
+for x in range(len(testdata2)):
+    if(testdata2.previous_year_rating[x]==0):
+        testdata2.previous_year_rating[x]=(3.0171011+(0.9143767*testdata2.kpimet[x]))
+        round(testdata2.previous_year_rating[x])
+
+
+#neural network model
+from keras.models import Sequential
+from keras.layers import Dense
+X_train=data2.iloc[:,:-1]
+Y_train=data2.iloc[:,-1]
+model=Sequential()
+model.add(Dense(12,input_dim=12,activation='relu'))
+model.add(Dense(8,activation='relu'))
+model.add(Dense(4,activation='relu'))
+model.add(Dense(3,activation='relu'))
+model.add(Dense(1,activation='sigmoid'))
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit(X_train, Y_train, epochs=100, batch_size=50)
+scores = model.evaluate(X_train, Y_train)
+print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
+predictions = model.predict(testdata2)
+rounded = [round(x[0]) for x in predictions]
+
+#exporting the result as csv
+
+a=pd.DataFrame(rounded)
+a.to_csv('samplesubmission2.csv')
+
+#also tried with sustituting the mean for the missing values 
+#the neural network model was also tuned with the hyperparameters
+#now directly loading the cleaned data 
+#Run the below code seperately
+
+#importing the packages and library
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from keras.models import Sequential
+from keras.layers import Dense,Dropout
+import statsmodels.api as sm
+from keras.optimizers import Adam
+#reading the cleaned data
+train=pd.read_csv("D:/datahack/day3/cleandata/cleantraineight.csv")
+test=pd.read_csv("D:/datahack/day3/cleandata/cleantesteight.csv")
+
+#neuralnetworkmodel
+
+X_train=train.iloc[:,:-1]
+Y_train=train.iloc[:,-1]
+ad=Sequential()
+ad.add(Dense(512,input_dim=8,activation='relu'))
+ad.add(Dense(256,activation='relu'))
+ad.add(Dense(84,activation='relu'))
+ad.add(Dense(24,activation='relu'))
+ad.add(Dense(1,activation='sigmoid'))
+ad.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+ad.fit(X_train, Y_train, epochs=100, batch_size=100)
+scores = ad.evaluate(X_train, Y_train)
+print("\n%s: %.2f%%" % (ad.metrics_names[1], scores[1]*100))
+predictions = ad.predict(test)
+rounded = [round(x[0]) for x in predictions]
